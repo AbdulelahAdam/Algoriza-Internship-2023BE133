@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "1a3jdOtK00qK098og3GZvuedvfXrUqF0Pa9+kg8NzhmSIKLohCYQnlzr7akD/MZFxmfIZ5Do7nP22oJ3H/n8BA==",
+  "success": true,
+  "projectFilePath": "C:\\CodeRepository\\cSharp\\dotnet\\AlgorizaPractice\\Project\\Core\\Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fsam5\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.0\\microsoft.entityframeworkcore.abstractions.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
