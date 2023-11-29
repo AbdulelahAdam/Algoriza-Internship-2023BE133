@@ -2,7 +2,6 @@ C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\bin\Debug\net5.0\C
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\bin\Debug\net5.0\Core.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\bin\Debug\net5.0\ref\Core.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\bin\Debug\net5.0\Core.pdb
-C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.csprojAssemblyReference.cache
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.GeneratedMSBuildEditorConfig.editorconfig
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.AssemblyInfoInputs.cache
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.AssemblyInfo.cs
@@ -10,3 +9,4 @@ C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\C
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\ref\Core.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.pdb
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\Core\obj\Debug\net5.0\Core.csprojAssemblyReference.cache

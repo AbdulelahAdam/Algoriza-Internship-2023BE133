@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Interfaces
 {
-    interface IPatientRepository
+    public interface IPatientRepository
     {
-        IEnumerable<Patient> GetAllPatients();
-        Patient GetPatientById(int patientId);
+        Task<bool> Register(Patient patient);
         IEnumerable<Booking> GetAllBookings();
     }
 }

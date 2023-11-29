@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +7,5 @@ using System.Threading.Tasks;
 namespace Core.Models
 {
     public class Admin
-    {
-        public int Id { get; set; }
-    }
-
-    public interface IAdminService
-    {
-
-    }
+    {}
 }

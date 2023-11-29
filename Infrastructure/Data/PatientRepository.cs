@@ -1,5 +1,6 @@
 ﻿using Core.Models;
 using Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,29 +9,30 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    class PatientRepository : IPatientRepository
+    public class PatientRepository : IPatientRepository
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public PatientRepository(ApplicationDbContext context)
+        public PatientRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IEnumerable<Booking> GetAllBookings()
         {
             throw new NotImplementedException();
         }
-
-        public IEnumerable<Patient> GetAllPatients()
+        public async Task<bool> Register(Patient patient)
         {
-            throw new NotImplementedException();
-        }
-
-        public Patient GetPatientById(int patientId)
-        {
-            throw new NotImplementedException();
+            var result = await _userManager.CreateAsync(patient);
+            if (result.Succeeded)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

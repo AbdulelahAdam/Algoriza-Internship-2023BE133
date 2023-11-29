@@ -1,14 +1,10 @@
-﻿using Core.Models;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Interfaces
+namespace Core.Models
 {
-    public interface IAdminRepository
+    public interface IAdminService
     {
         // Operations on Doctors
         IEnumerable<Doctor> GetAllDoctors(int skip, int page);
@@ -29,5 +25,6 @@ namespace Infrastructure.Interfaces
         bool UpdateCoupon(Coupon changedCoupon);
         bool DeleteCoupon(int id);
         bool DeactivateCoupon(int id);
+
     }
 }
