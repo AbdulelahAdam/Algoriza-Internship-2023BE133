@@ -74,9 +74,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Specialization")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -100,6 +97,239 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Core.Models.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("Day")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TimeSlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("TimeSlotId");
+
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Core.Models.Specialization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Specializations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Allergy and Immunology"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Anesthesiology"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Cardiology"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Cardiothoracic Surgery"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Dermatology"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Emergency Medicine"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Endocrinology"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Family Medicine"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Gastroenterology"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "General Surgery"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Geriatrics"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Hematology"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Infectious Disease"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Internal Medicine"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Medical Genetics"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Nephrology"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Neurology"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Neurosurgery"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Obstetrics and Gynecology"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Oncology"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Ophthalmology"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Orthopedic Surgery"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "Otolaryngology (ENT - Ear, Nose, and Throat)"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Pathology"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Pediatrics"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Physical Medicine and Rehabilitation"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "Plastic Surgery"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "Psychiatry"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Name = "Pulmonology"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Name = "Radiation Oncology"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Name = "Radiology"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Name = "Rheumatology"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Name = "Sports Medicine"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Name = "Thoracic Surgery"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Name = "Urology"
+                        });
+                });
+
+            modelBuilder.Entity("Core.Models.TimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeSlots");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -237,6 +467,11 @@ namespace Infrastructure.Migrations
                 {
                     b.HasBaseType("Core.Models.ApplicationUser");
 
+                    b.Property<int>("SpecializationId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("SpecializationId");
+
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
@@ -245,6 +480,25 @@ namespace Infrastructure.Migrations
                     b.HasBaseType("Core.Models.ApplicationUser");
 
                     b.HasDiscriminator().HasValue("Patient");
+                });
+
+            modelBuilder.Entity("Core.Models.Appointment", b =>
+                {
+                    b.HasOne("Core.Models.Doctor", "Doctor")
+                        .WithMany("Appointments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Models.TimeSlot", "TimeSlot")
+                        .WithMany()
+                        .HasForeignKey("TimeSlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("TimeSlot");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -296,6 +550,27 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Models.Doctor", b =>
+                {
+                    b.HasOne("Core.Models.Specialization", "Specialization")
+                        .WithMany("Doctors")
+                        .HasForeignKey("SpecializationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Specialization");
+                });
+
+            modelBuilder.Entity("Core.Models.Specialization", b =>
+                {
+                    b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("Core.Models.Doctor", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

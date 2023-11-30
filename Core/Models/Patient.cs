@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace Core.Models
 {
     public class Patient : ApplicationUser
-    {        
+    {
     }
 }

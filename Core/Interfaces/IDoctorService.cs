@@ -7,8 +7,8 @@ namespace Core.Models
         IEnumerable<Booking> GetAllBookings(Doctor obj);
         bool ConfirmCheckUp(int BookingId);
 
-        bool AddAppointment(Appointment obj);
-        bool UpdateAppointment(Appointment obj);
-        bool DeleteAppointment(Appointment obj);
+        bool AddAppointment(AppointmentPayload obj);
+        bool UpdateAppointment(AppointmentPayload obj);
+        bool DeleteAppointment(AppointmentPayload obj);
     }
 }
