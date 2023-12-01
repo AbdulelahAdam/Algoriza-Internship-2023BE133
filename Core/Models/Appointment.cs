@@ -1,4 +1,6 @@
-﻿namespace Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Core.Models
 {
     public class Appointment
     {
@@ -6,7 +8,7 @@
         public Days? Day { get; set; }
 
         public int TimeSlotId { get; set; }
-
+        [Required]
         public string DoctorId { get; set; }
     }
 

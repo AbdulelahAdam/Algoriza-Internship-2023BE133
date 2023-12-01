@@ -83,12 +83,12 @@ namespace Infrastructure.Data
 
             if (pageSize < 1)
             {
-                pageSize = 10; // default page size
+                pageSize = 10;
             }
 
             int skip = (pageNumber - 1) * pageSize;
 
-            var paginatedData = _context.Doctors
+            var paginatedData = _context.Doctors.Include(d => d.Appointments)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToList();
@@ -105,7 +105,7 @@ namespace Infrastructure.Data
 
             if (pageSize < 1)
             {
-                pageSize = 10; // default page size
+                pageSize = 10;
             }
 
             int skip = (pageNumber - 1) * pageSize;
@@ -120,8 +120,10 @@ namespace Infrastructure.Data
 
         public Doctor GetDoctorById(int doctorId)
         {
-            Doctor doc = _context.Doctors.FirstOrDefault(d => Convert.ToInt32(d.Id) == doctorId);
-
+            Doctor doc = _context.Doctors
+                .Include(d => d.Appointments)
+                .FirstOrDefault(d => Convert.ToInt32(d.Id) == doctorId);
+            
             if (doc != null)
             {
                 return doc;

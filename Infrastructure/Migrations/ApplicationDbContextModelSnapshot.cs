@@ -120,9 +120,34 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DoctorId");
 
+                    b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Core.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TimeSlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
                     b.HasIndex("TimeSlotId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Core.Models.Specialization", b =>
@@ -467,6 +492,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasBaseType("Core.Models.ApplicationUser");
 
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
 
@@ -484,11 +512,22 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Models.Appointment", b =>
                 {
-                    b.HasOne("Core.Models.Doctor", "Doctor")
+                    b.HasOne("Core.Models.Doctor", null)
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Models.Booking", b =>
+                {
+                    b.HasOne("Core.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("Core.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
 
                     b.HasOne("Core.Models.TimeSlot", "TimeSlot")
                         .WithMany()
@@ -497,6 +536,8 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
 
                     b.Navigation("TimeSlot");
                 });
@@ -554,13 +595,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Models.Doctor", b =>
                 {
-                    b.HasOne("Core.Models.Specialization", "Specialization")
+                    b.HasOne("Core.Models.Specialization", null)
                         .WithMany("Doctors")
                         .HasForeignKey("SpecializationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Specialization");
                 });
 
             modelBuilder.Entity("Core.Models.Specialization", b =>

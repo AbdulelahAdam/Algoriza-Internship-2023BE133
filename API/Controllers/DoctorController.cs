@@ -41,5 +41,17 @@ namespace Algoriza_Internship_BE133.Controllers
         {
             return _doctorService.AddAppointment(payload);
         }
+
+        [HttpPut("UpdateAppointment")]
+        public bool UpdateAppointment([FromBody] AppointmentPayload payload)
+        {
+            return _doctorService.UpdateAppointment(payload);
+        }
+
+        [HttpDelete("DeleteAppointment")]
+        public bool DeleteAppointment(int doctorId)
+        {
+            return _doctorService.DeleteAppointment(doctorId);
+        }
     }
 }

@@ -29,9 +29,9 @@ namespace Application
             throw new NotImplementedException();
         }
 
-        public bool DeleteAppointment(AppointmentPayload obj)
+        public bool DeleteAppointment(int doctorId)
         {
-            throw new NotImplementedException();
+            return _doctorRepository.DeleteAppointment(doctorId);
         }
 
         public IEnumerable<Booking> GetAllBookings(Doctor obj)
@@ -41,7 +41,7 @@ namespace Application
 
         public bool UpdateAppointment(AppointmentPayload obj)
         {
-            throw new NotImplementedException();
+            return _doctorRepository.UpdateAppointment(obj);
         }
     }
 }

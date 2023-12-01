@@ -63,6 +63,18 @@ namespace Algoriza_Internship_BE133
             
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IDoctorService, DoctorService>();
+            
+            services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
+            services.AddScoped<ITimeSlotService, TimeSlotService>();
+
+
+            services.AddScoped<IDaysRepository, DaysRepository>();
+            services.AddScoped<IDaysService, DaysService>();
+
+
+            services.AddScoped<IBookingRepository, BookingRepository>();
+            services.AddScoped<IBookingService, BookingService>();
+
 
             services.AddSwaggerGen(c =>
             {

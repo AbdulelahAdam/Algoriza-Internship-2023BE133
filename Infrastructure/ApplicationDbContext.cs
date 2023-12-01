@@ -16,6 +16,7 @@ namespace Infrastructure.Data
 
         public DbSet<Patient> Patients{ get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Booking> Bookings{ get; set; }
         public DbSet<TimeSlot> TimeSlots { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,9 @@ namespace Infrastructure.Data
             //    .HasForeignKey(a => a.TimeSlotId)
             //    .IsRequired();
 
+            modelBuilder.Entity<Appointment>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd();
 
 
 

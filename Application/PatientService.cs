@@ -11,10 +11,12 @@ namespace Application
     public class PatientService : IPatientService
     {
         private readonly IPatientRepository _patientRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public PatientService(IPatientRepository patientRepository)
+        public PatientService(IPatientRepository patientRepository, IBookingRepository bookingRepository)
         {
             _patientRepository = patientRepository;
+            _bookingRepository = bookingRepository;
         }
 
         public async Task<bool> Register(Patient patient)
@@ -27,6 +29,16 @@ namespace Application
         public IEnumerable<Booking> GetAllBookings()
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Doctor> GetAllDoctors(int skip, int page)
+        {
+            return _patientRepository.GetAllDoctors(skip, page);
+        }
+
+        public bool MakeBooking(string patientId, string doctorId, int timeSlotId)
+        {
+            return _bookingRepository.MakeBooking(patientId, doctorId, timeSlotId);
         }
     }
 }

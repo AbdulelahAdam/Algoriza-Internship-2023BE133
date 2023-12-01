@@ -9,6 +9,6 @@ namespace Core.Models
 
         bool AddAppointment(AppointmentPayload obj);
         bool UpdateAppointment(AppointmentPayload obj);
-        bool DeleteAppointment(AppointmentPayload obj);
+        bool DeleteAppointment(int doctorId);
     }
 }

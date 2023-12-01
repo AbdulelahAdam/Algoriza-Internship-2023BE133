@@ -14,6 +14,6 @@ namespace Infrastructure.Interfaces
 
         bool AddAppointment(AppointmentPayload obj);
         bool UpdateAppointment(AppointmentPayload obj);
-        bool DeleteAppointment(AppointmentPayload obj);
+        bool DeleteAppointment(int doctorId);
     }
 }

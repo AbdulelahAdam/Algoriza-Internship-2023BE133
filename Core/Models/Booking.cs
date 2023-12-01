@@ -1,7 +1,16 @@
-﻿namespace Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Core.Models
 {
     public class Booking
     {
-        public int Id { get; set; }
+        [Required]
+        public string PatientId { get; set; }
+        [Required]
+        public string DoctorId { get; set; }
+        [Required]
+        public int TimeSlotId { get; set; }
+
+
     }
 }
