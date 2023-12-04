@@ -4,8 +4,9 @@ namespace Core.Models
 {
     public class AppointmentPayload
     {
-        public string DoctorId { get; set; }
+        public float Price { get; set; }
         public Dictionary<string, List<string>> Appointments { get; set; }
     }
+
 
 }

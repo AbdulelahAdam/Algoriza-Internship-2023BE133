@@ -9,7 +9,7 @@ namespace Core.Models
     {
         public Gender? Gender { set; get; }
         public DateTime DateOfBirth { get; set; }
-        public virtual byte[] UserImage { get; set; }
+        public virtual string UserImage { get; set; }
     }
 
 }

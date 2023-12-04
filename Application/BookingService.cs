@@ -17,9 +17,9 @@ namespace Application
             _BookingRepository = bookingRepository;
         }
 
-        public bool MakeBooking(string patientId, string doctorId, int timeSlotId)
+        public bool MakeBooking(BookingPayload obj, string patientId)
         {
-            return _BookingRepository.MakeBooking(patientId, doctorId, timeSlotId);
+            return _BookingRepository.MakeBooking(obj, patientId);
         }
     }
 }

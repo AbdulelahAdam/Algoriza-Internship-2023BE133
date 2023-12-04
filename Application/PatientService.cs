@@ -36,9 +36,9 @@ namespace Application
             return _patientRepository.GetAllDoctors(skip, page);
         }
 
-        public bool MakeBooking(string patientId, string doctorId, int timeSlotId)
+        public bool MakeBooking(BookingPayload obj, string patientId)
         {
-            return _bookingRepository.MakeBooking(patientId, doctorId, timeSlotId);
+            return _bookingRepository.MakeBooking(obj, patientId);
         }
     }
 }

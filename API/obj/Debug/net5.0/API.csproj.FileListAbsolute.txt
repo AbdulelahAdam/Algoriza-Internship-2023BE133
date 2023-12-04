@@ -93,7 +93,6 @@ C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Mi
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Microsoft.OpenApi.dll
-C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Newtonsoft.Json.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -136,3 +135,4 @@ C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\AP
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\ref\API.dll
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\API.pdb
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\API.genruntimeconfig.cache
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -23,9 +23,9 @@ namespace Infrastructure.Data
             _daysService = daysService;
         }
 
-        public bool AddAppointment(AppointmentPayload payload)
+        public bool AddAppointment(string doctorId, AppointmentPayload payload)
         {
-            var doctorId = payload.DoctorId;
+            
             int appointmentsCount = 0;
             int dbSaves = 0;
             Days parsedDay;
@@ -38,7 +38,8 @@ namespace Infrastructure.Data
                     {
                         DoctorId = doctorId,
                         Day = parsedDay,
-                        TimeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time)
+                        TimeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time),
+                        Price = payload.Price
                     };
                     ++appointmentsCount;
                     var doctor = _context.Doctors.FirstOrDefault(d => d.Id == doctorId); // also this here doesn't eqaute, there's an error
@@ -78,16 +79,33 @@ namespace Infrastructure.Data
             return false;
         }
 
-        public IEnumerable<Booking> GetAllBookings(Doctor obj)
+        public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, string search)
         {
-            throw new NotImplementedException();
+            if (pageNumber < 1)
+            {
+                pageNumber = 1;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 1;
+            }
+
+            int skip = (pageNumber - 1) * pageSize;
+
+
+            var paginatedData =
+                _context.Bookings.Where(b => b.DoctorId == doctorId)
+                .Skip(skip)
+                .Take(pageSize)
+                .ToList();
+
+            return paginatedData;
         }
 
-        public bool UpdateAppointment(AppointmentPayload payload)
+        public bool UpdateAppointment(string doctorId, AppointmentPayload payload)
         {
-            var doctorId = payload.DoctorId;
             Days parsedDay;
-
             
             var doctor = _context.Doctors
                 .Include(d => d.Appointments)
@@ -95,7 +113,6 @@ namespace Infrastructure.Data
 
             if (doctor != null)
             {
-                doctor.Appointments.Clear();
                 foreach (var (day, times) in payload.Appointments)
                 {
                     parsedDay = _daysService.GetParsedDay(day);
@@ -105,9 +122,11 @@ namespace Infrastructure.Data
                         {
                             DoctorId = doctorId,
                             Day = parsedDay,
-                            TimeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time)
+                            TimeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time),
+                            Price = payload.Price
                         };
-                        var doctorAppointments = _context.Appointments.Add(newAppointment);
+                        var doctorAppointments = _context.Appointments.Update(newAppointment);
+                        //doctorAppointments.State = Microsoft.EntityFrameworkCore.EntityState.Modified
                         _context.SaveChanges();
 
                     }

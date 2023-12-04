@@ -9,6 +9,11 @@ using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Infrastructure.Data
 {
@@ -17,7 +22,6 @@ namespace Infrastructure.Data
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
         public AdminRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -31,7 +35,8 @@ namespace Infrastructure.Data
 
         public async Task<bool> AddDoctor(Doctor doctor)
         {
-            
+            var hashedPass = new PasswordHasher<Doctor>().HashPassword(doctor, doctor.PasswordHash);
+            doctor.PasswordHash = hashedPass;
             var result = await _userManager.CreateAsync(doctor);
             if (result.Succeeded)
             {
@@ -40,6 +45,8 @@ namespace Infrastructure.Data
             return false;
 
         }
+
+        
 
         public bool DeactivateCoupon(int id)
         {
@@ -68,6 +75,8 @@ namespace Infrastructure.Data
 
         public bool EditDoctor(Doctor doctor)
         {
+            var hashedPass = new PasswordHasher<Doctor>().HashPassword(doctor, doctor.PasswordHash);
+            doctor.PasswordHash = hashedPass;
             var doc = _context.Doctors.Attach(doctor);
             doc.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.SaveChanges();
@@ -83,18 +92,38 @@ namespace Infrastructure.Data
 
             if (pageSize < 1)
             {
-                pageSize = 10;
+                pageSize = 1;
             }
 
             int skip = (pageNumber - 1) * pageSize;
 
-            var paginatedData = _context.Doctors.Include(d => d.Appointments)
+
+            var paginatedData = 
+                _context.Doctors.Include(d => d.Appointments)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToList();
 
             return paginatedData;
         }
+        
+        public IEnumerable<Doctor> GetAllDoctorsBySearch(string search)
+        {
+            IQueryable<Doctor> query = _context.Doctors.Include(d => d.Appointments);
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(d =>
+                    d.UserName.Contains(search) ||
+                    d.Email.Contains(search) ||
+                    d.Id.Contains(search)
+                );
+            }
+
+
+            return query;
+        }
+        
 
         public IEnumerable<Patient> GetAllPatients(int pageNumber, int pageSize)
         {
@@ -105,7 +134,7 @@ namespace Infrastructure.Data
 
             if (pageSize < 1)
             {
-                pageSize = 10;
+                pageSize = 1;  
             }
 
             int skip = (pageNumber - 1) * pageSize;

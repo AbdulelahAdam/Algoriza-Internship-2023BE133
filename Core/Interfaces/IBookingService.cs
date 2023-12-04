@@ -2,6 +2,6 @@
 {
     public interface IBookingService
     {
-        bool MakeBooking(string patientId, string doctorId, int timeSlotId);
+        bool MakeBooking(BookingPayload obj, string patientId);
     }
 }

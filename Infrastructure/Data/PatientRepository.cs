@@ -38,7 +38,7 @@ namespace Infrastructure.Data
 
             if (pageSize < 1)
             {
-                pageSize = 10; 
+                pageSize = 1; 
             }
 
             int skip = (pageNumber - 1) * pageSize;
@@ -51,13 +51,15 @@ namespace Infrastructure.Data
             return paginatedData;
         }
 
-        public bool MakeBooking(string patientId, string doctorId, int timeSlotId)
+        public bool MakeBooking(BookingPayload obj, string patientId)
         {
-            return _bookingRepository.MakeBooking(patientId, doctorId, timeSlotId);
+            return _bookingRepository.MakeBooking(obj, patientId);
         }
 
         public async Task<bool> Register(Patient patient)
         {
+            var hashedPass = new PasswordHasher<Patient>().HashPassword(patient, patient.PasswordHash);
+            patient.PasswordHash = hashedPass;
             var result = await _userManager.CreateAsync(patient);
             if (result.Succeeded)
             {

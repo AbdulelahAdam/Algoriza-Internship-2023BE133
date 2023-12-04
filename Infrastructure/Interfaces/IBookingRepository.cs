@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Infrastructure.Interfaces
 {
     public interface IBookingRepository
     {
-        bool MakeBooking(string patientId, string doctorId, int timeSlotId);
+        bool MakeBooking(BookingPayload obj, string patientId);
     }
 }

@@ -29,6 +29,7 @@ namespace Application
 
         }
 
+
         public bool DeactivateCoupon(int id)
         {
             throw new NotImplementedException();
@@ -52,6 +53,11 @@ namespace Application
         public IEnumerable<Doctor> GetAllDoctors(int skip, int page)
         {
             return _adminRepository.GetAllDoctors(skip, page);
+        }
+
+        public IEnumerable<Doctor> GetAllDoctorsBySearch(string search)
+        {
+            return _adminRepository.GetAllDoctorsBySearch(search);
         }
 
         public IEnumerable<Patient> GetAllPatients(int skip, int page)

@@ -1,9 +1,11 @@
 ﻿using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Algoriza_Internship_BE133.Controllers
@@ -13,19 +15,16 @@ namespace Algoriza_Internship_BE133.Controllers
     public class PatientController : Controller
     {
         private readonly IPatientService _patientService;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserLoginService _userLoginService;
         private readonly IBookingService _bookingService;
-        public PatientController(IPatientService adminService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IBookingService bookingService)
+        public PatientController(IPatientService patientService, IBookingService bookingService, IUserLoginService userLoginService)
         {
-            _patientService = adminService;
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _patientService = patientService;
             _bookingService = bookingService;
+            _userLoginService = userLoginService;
         }
-
-
         [HttpPost("Register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(Patient patient)
         {
             var doc = await _patientService.Register(patient);
@@ -35,21 +34,23 @@ namespace Algoriza_Internship_BE133.Controllers
 
             return Ok(doc);
         }
-
+        
         [HttpPost("Login")]
-        public async Task<bool> Login(string email, string password)
+        [AllowAnonymous]
+        public IActionResult Login([FromBody] Patient userLogin)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = _userLoginService.Authenticate(userLogin);
+
             if (user != null)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return true;
+                var token = _userLoginService.Generate(user);
+                return Ok(token);
             }
 
-            return false;
+            return NotFound("User not found");
         }
-
         [HttpGet("SearchDoctors")]
+        [Authorize(Roles = "Patient")]
         public IActionResult SearchDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -62,11 +63,14 @@ namespace Algoriza_Internship_BE133.Controllers
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
         }
-
         [HttpPost("BookADoctor")]
-        public bool BookADoctor([FromBody] Booking request)
+        [Authorize(Roles = "Patient")]
+        public bool BookADoctor([FromBody] BookingPayload obj)
         {
-            bool bookingResult = _bookingService.MakeBooking(request.PatientId, request.DoctorId, request.TimeSlotId);
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            bool bookingResult = _bookingService.MakeBooking(obj, userId);
 
             if (bookingResult)
             {

@@ -13,10 +13,10 @@ namespace Core.Models
     public class Doctor : ApplicationUser
     {
         [Required]
-        public int SpecializationId { set; get; }        
-        public override byte[] UserImage { get; set; }
+        public int SpecializationId { set; get; }      
         [Required]
-        public float Price { get; set; }
+        public override string UserImage { get; set; }
+        
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

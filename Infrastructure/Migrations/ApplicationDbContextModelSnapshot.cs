@@ -77,8 +77,8 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<byte[]>("UserImage")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("UserImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -106,12 +106,15 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("Day")
+                    b.Property<int>("Day")
                         .HasColumnType("int");
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("TimeSlotId")
                         .HasColumnType("int");
@@ -131,21 +134,20 @@ namespace Infrastructure.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("DoctorId")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientId")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("TimeSlotId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.HasIndex("TimeSlotId");
 
                     b.ToTable("Bookings");
                 });
@@ -193,151 +195,156 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 6,
-                            Name = "Emergency Medicine"
+                            Name = "Diagnostics"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Endocrinology"
+                            Name = "Emergency Medicine"
                         },
                         new
                         {
                             Id = 8,
-                            Name = "Family Medicine"
+                            Name = "Endocrinology"
                         },
                         new
                         {
                             Id = 9,
-                            Name = "Gastroenterology"
+                            Name = "Family Medicine"
                         },
                         new
                         {
                             Id = 10,
-                            Name = "General Surgery"
+                            Name = "Gastroenterology"
                         },
                         new
                         {
                             Id = 11,
-                            Name = "Geriatrics"
+                            Name = "General Surgery"
                         },
                         new
                         {
                             Id = 12,
-                            Name = "Hematology"
+                            Name = "Geriatrics"
                         },
                         new
                         {
                             Id = 13,
-                            Name = "Infectious Disease"
+                            Name = "Hematology"
                         },
                         new
                         {
                             Id = 14,
-                            Name = "Internal Medicine"
+                            Name = "Infectious Disease"
                         },
                         new
                         {
                             Id = 15,
-                            Name = "Medical Genetics"
+                            Name = "Internal Medicine"
                         },
                         new
                         {
                             Id = 16,
-                            Name = "Nephrology"
+                            Name = "Medical Genetics"
                         },
                         new
                         {
                             Id = 17,
-                            Name = "Neurology"
+                            Name = "Nephrology"
                         },
                         new
                         {
                             Id = 18,
-                            Name = "Neurosurgery"
+                            Name = "Neurology"
                         },
                         new
                         {
                             Id = 19,
-                            Name = "Obstetrics and Gynecology"
+                            Name = "Neurosurgery"
                         },
                         new
                         {
                             Id = 20,
-                            Name = "Oncology"
+                            Name = "Obstetrics and Gynecology"
                         },
                         new
                         {
                             Id = 21,
-                            Name = "Ophthalmology"
+                            Name = "Oncology"
                         },
                         new
                         {
                             Id = 22,
-                            Name = "Orthopedic Surgery"
+                            Name = "Ophthalmology"
                         },
                         new
                         {
                             Id = 23,
-                            Name = "Otolaryngology (ENT - Ear, Nose, and Throat)"
+                            Name = "Orthopedic Surgery"
                         },
                         new
                         {
                             Id = 24,
-                            Name = "Pathology"
+                            Name = "Otolaryngology (ENT - Ear, Nose, and Throat)"
                         },
                         new
                         {
                             Id = 25,
-                            Name = "Pediatrics"
+                            Name = "Pathology"
                         },
                         new
                         {
                             Id = 26,
-                            Name = "Physical Medicine and Rehabilitation"
+                            Name = "Pediatrics"
                         },
                         new
                         {
                             Id = 27,
-                            Name = "Plastic Surgery"
+                            Name = "Physical Medicine and Rehabilitation"
                         },
                         new
                         {
                             Id = 28,
-                            Name = "Psychiatry"
+                            Name = "Plastic Surgery"
                         },
                         new
                         {
                             Id = 29,
-                            Name = "Pulmonology"
+                            Name = "Psychiatry"
                         },
                         new
                         {
                             Id = 30,
-                            Name = "Radiation Oncology"
+                            Name = "Pulmonology"
                         },
                         new
                         {
                             Id = 31,
-                            Name = "Radiology"
+                            Name = "Radiation Oncology"
                         },
                         new
                         {
                             Id = 32,
-                            Name = "Rheumatology"
+                            Name = "Radiology"
                         },
                         new
                         {
                             Id = 33,
-                            Name = "Sports Medicine"
+                            Name = "Rheumatology"
                         },
                         new
                         {
                             Id = 34,
-                            Name = "Thoracic Surgery"
+                            Name = "Sports Medicine"
                         },
                         new
                         {
                             Id = 35,
+                            Name = "Thoracic Surgery"
+                        },
+                        new
+                        {
+                            Id = 36,
                             Name = "Urology"
                         });
                 });
@@ -488,12 +495,35 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Core.Models.Doctor", b =>
+            modelBuilder.Entity("Core.Models.Admin", b =>
                 {
                     b.HasBaseType("Core.Models.ApplicationUser");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.HasDiscriminator().HasValue("Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e7e8bc5b-d68c-4b30-97c7-4fadb619a3fe",
+                            DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@GMAIL.COM",
+                            NormalizedUserName = "ADMIN@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHgde1QVaMrnU9QSCDIsiH+V4nFCAt5+OXTBJaUG35LpvQON+ljbHglv7AVBrjXejg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "21ff94bc-9b43-41a2-8652-92608bd4e274",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("Core.Models.Doctor", b =>
+                {
+                    b.HasBaseType("Core.Models.ApplicationUser");
 
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
@@ -517,29 +547,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Models.Booking", b =>
-                {
-                    b.HasOne("Core.Models.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId");
-
-                    b.HasOne("Core.Models.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("Core.Models.TimeSlot", "TimeSlot")
-                        .WithMany()
-                        .HasForeignKey("TimeSlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("TimeSlot");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

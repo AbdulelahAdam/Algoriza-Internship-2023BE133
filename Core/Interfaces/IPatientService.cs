@@ -6,7 +6,7 @@ namespace Core.Models
     public interface IPatientService
     {
         Task<bool> Register(Patient patient);
-        bool MakeBooking(string patientId, string doctorId, int timeSlotId);
+        bool MakeBooking(BookingPayload obj, string patientId);
 
         IEnumerable<Booking> GetAllBookings();
 

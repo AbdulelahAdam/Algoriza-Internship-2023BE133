@@ -19,9 +19,9 @@ namespace Application
             _doctorRepository = doctorRepository;
         }
 
-        public bool AddAppointment(AppointmentPayload obj)
+        public bool AddAppointment(string doctorId, AppointmentPayload obj)
         {
-            return _doctorRepository.AddAppointment(obj);
+            return _doctorRepository.AddAppointment(doctorId, obj);
         }
 
         public bool ConfirmCheckUp(int BookingId)
@@ -34,14 +34,14 @@ namespace Application
             return _doctorRepository.DeleteAppointment(doctorId);
         }
 
-        public IEnumerable<Booking> GetAllBookings(Doctor obj)
+        public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, string search)
         {
-            throw new NotImplementedException();
+            return _doctorRepository.GetAllBookings(doctorId, pageNumber, pageSize, search);
         }
 
-        public bool UpdateAppointment(AppointmentPayload obj)
+        public bool UpdateAppointment(string doctorId, AppointmentPayload obj)
         {
-            return _doctorRepository.UpdateAppointment(obj);
+            return _doctorRepository.UpdateAppointment(doctorId, obj);
         }
     }
 }

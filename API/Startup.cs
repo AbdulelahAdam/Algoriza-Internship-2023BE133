@@ -18,6 +18,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Core.Models;
 using Application;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Algoriza_Internship_BE133
 {
@@ -34,25 +37,38 @@ namespace Algoriza_Internship_BE133
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+
+            
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequiredLength = 8;
-
-                options.User.RequireUniqueEmail = true;
-            })
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddSignInManager<SignInManager<ApplicationUser>>();
+
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"]))
+                };
+            });
+            services.AddControllers();
 
             //services.AddTransient(typeof(IAdminRepository<>), typeof(AdminRepository<>));
             services.AddScoped<IAdminRepository, AdminRepository>();
@@ -60,10 +76,10 @@ namespace Algoriza_Internship_BE133
 
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPatientService, PatientService>();
-            
+
             services.AddScoped<IDoctorRepository, DoctorRepository>();
             services.AddScoped<IDoctorService, DoctorService>();
-            
+
             services.AddScoped<ITimeSlotRepository, TimeSlotRepository>();
             services.AddScoped<ITimeSlotService, TimeSlotService>();
 
@@ -74,6 +90,10 @@ namespace Algoriza_Internship_BE133
 
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IBookingService, BookingService>();
+            
+            
+            services.AddScoped<IUserLoginRepository, UserLoginRepository>();
+            services.AddScoped<IUserLoginService, UserLoginService>();
 
 
             services.AddSwaggerGen(c =>
@@ -93,15 +113,19 @@ namespace Algoriza_Internship_BE133
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

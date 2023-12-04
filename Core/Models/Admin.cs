@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Core.Models
 {
-    public class Admin
+    public class Admin : ApplicationUser
     {}
 
 }

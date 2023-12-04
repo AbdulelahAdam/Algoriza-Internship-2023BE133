@@ -11,7 +11,7 @@ namespace Infrastructure.Interfaces
     {
         Task<bool> Register(Patient patient);
         IEnumerable<Booking> GetAllBookings();
-        bool MakeBooking(string patientId, string doctorId, int timeSlotId);
+        bool MakeBooking(BookingPayload obj, string patientId);
         IEnumerable<Doctor> GetAllDoctors(int skip, int page);
     }
 }

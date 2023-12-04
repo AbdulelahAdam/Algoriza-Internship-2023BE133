@@ -1,9 +1,11 @@
 ﻿using Core.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,45 +15,63 @@ namespace Algoriza_Internship_BE133.Controllers
     [ApiController]
     public class DoctorController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IDoctorService _doctorService;
-        public DoctorController(IDoctorService doctorService, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        private readonly IUserLoginService _userLoginService;
+        public DoctorController(IDoctorService doctorService, IUserLoginService userLoginService)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
             _doctorService = doctorService;
+            _userLoginService = userLoginService;
         }
 
         [HttpPost("Login")]
-        public async Task<bool> Login(string email, string password)
+        [AllowAnonymous]
+        public IActionResult Login([FromBody] Doctor userLogin)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = _userLoginService.Authenticate(userLogin);
+
             if (user != null)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return true;
+                var token = _userLoginService.Generate(user);
+                return Ok(token);
             }
 
-            return false;
+            return NotFound("User not found");
         }
-        
+
         [HttpPost("AddAppointment")]
+        [Authorize(Roles = "Doctor")]
         public bool AddAppointment([FromBody] AppointmentPayload payload)
         {
-            return _doctorService.AddAppointment(payload);
-        }
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            return _doctorService.AddAppointment(doctorId, payload);
+        }
         [HttpPut("UpdateAppointment")]
+        [Authorize(Roles = "Doctor")]
         public bool UpdateAppointment([FromBody] AppointmentPayload payload)
         {
-            return _doctorService.UpdateAppointment(payload);
-        }
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            return _doctorService.UpdateAppointment(doctorId, payload);
+        }
         [HttpDelete("DeleteAppointment")]
+        [Authorize(Roles = "Doctor")]
         public bool DeleteAppointment(int doctorId)
         {
             return _doctorService.DeleteAppointment(doctorId);
+        }
+
+
+        [HttpGet("SearchBookings")]
+        [Authorize(Roles = "Doctor")]
+        public IEnumerable<Booking> SearchBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string search)
+        {   
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return _doctorService.GetAllBookings(doctorId, pageNumber, pageSize, search);
         }
     }
 }
