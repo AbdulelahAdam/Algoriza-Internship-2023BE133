@@ -47,6 +47,8 @@ namespace Algoriza_Internship_BE133.Controllers
 
             return _doctorService.AddAppointment(doctorId, payload);
         }
+
+
         [HttpPut("UpdateAppointment")]
         [Authorize(Roles = "Doctor")]
         public bool UpdateAppointment([FromBody] AppointmentPayload payload)
@@ -56,6 +58,8 @@ namespace Algoriza_Internship_BE133.Controllers
 
             return _doctorService.UpdateAppointment(doctorId, payload);
         }
+
+
         [HttpDelete("DeleteAppointment")]
         [Authorize(Roles = "Doctor")]
         public bool DeleteAppointment(int doctorId)
