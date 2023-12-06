@@ -2,7 +2,7 @@
 {
     public enum Days
     {
-        SATURDAY = 1,
+        SATURDAY,
         SUNDAY,
         MONDAY,
         TUESDAY,

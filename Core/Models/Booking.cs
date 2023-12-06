@@ -13,6 +13,8 @@ namespace Core.Models
         [Required]
         public int TimeSlotId { get; set; }
 
+        public float BookingPrice { get; set; }
+        public float FinalBookingPrice { get; set; }
         public BookingStatus Status { get; set; } = BookingStatus.PENDING;
 
 

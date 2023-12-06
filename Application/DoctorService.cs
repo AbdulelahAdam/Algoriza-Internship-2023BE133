@@ -24,9 +24,9 @@ namespace Application
             return _doctorRepository.AddAppointment(doctorId, obj);
         }
 
-        public bool ConfirmCheckUp(int BookingId)
+        public bool ConfirmCheckUp(int BookingId, string doctorId)
         {
-            throw new NotImplementedException();
+            return _doctorRepository.ConfirmCheckUp(BookingId, doctorId);
         }
 
         public bool DeleteAppointment(int doctorId)

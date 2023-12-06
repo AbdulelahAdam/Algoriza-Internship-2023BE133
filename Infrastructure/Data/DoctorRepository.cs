@@ -57,9 +57,19 @@ namespace Infrastructure.Data
 
 
 
-        public bool ConfirmCheckUp(int BookingId)
+        public bool ConfirmCheckUp(int BookingId, string doctorId)
         {
-            throw new NotImplementedException();
+            var booking = _context.Bookings.FirstOrDefault(b => b.Id == BookingId && b.DoctorId == doctorId);
+
+            if(booking != null && booking.Status == BookingStatus.PENDING)
+            {
+                booking.Status = BookingStatus.COMPLETED;
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
+
         }
 
         public bool DeleteAppointment(int doctorId)

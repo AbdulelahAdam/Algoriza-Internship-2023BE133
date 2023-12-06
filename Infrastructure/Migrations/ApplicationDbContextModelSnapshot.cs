@@ -133,6 +133,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<float>("BookingPrice")
+                        .HasColumnType("real");
+
                     b.Property<string>("DoctorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -150,6 +153,33 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("Core.Models.Coupon", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("DiscountCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DiscountCodeStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountValue")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestsNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("Core.Models.Specialization", b =>
@@ -506,16 +536,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7e8bc5b-d68c-4b30-97c7-4fadb619a3fe",
+                            ConcurrencyStamp = "a5d18038-d0c1-4a41-80ec-9b76e4959486",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHgde1QVaMrnU9QSCDIsiH+V4nFCAt5+OXTBJaUG35LpvQON+ljbHglv7AVBrjXejg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM6DNVf9U/L1uOZuHVAjIVZOP4COs6nTnOdiCgJ/lbEaUfRVRSYa4qlEbdnqXkHpBw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "21ff94bc-9b43-41a2-8652-92608bd4e274",
+                            SecurityStamp = "2402c152-80b9-4579-85c2-26c93bf9e410",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

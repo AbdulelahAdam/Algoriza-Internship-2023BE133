@@ -38,6 +38,17 @@ namespace Algoriza_Internship_BE133.Controllers
             return NotFound("User not found");
         }
 
+        [HttpPost("ConfirmCheckUp")]
+        [Authorize(Roles = "Doctor")]
+        public bool ConfirmCheckUp([FromQuery] int bookingId) 
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return _doctorService.ConfirmCheckUp(bookingId, doctorId);
+        }
+
+
         [HttpPost("AddAppointment")]
         [Authorize(Roles = "Doctor")]
         public bool AddAppointment([FromBody] AppointmentPayload payload)

@@ -18,9 +18,9 @@ namespace Application
             _adminRepository = adminRepository;
         }
 
-        public bool AddCoupon(Coupon coupon)
+        public bool AddCoupon(CouponPayload obj)
         {
-            throw new NotImplementedException();
+            return _adminRepository.AddCoupon(obj);
         }
 
         public Task<bool> AddDoctor(Doctor doctor)
@@ -32,15 +32,15 @@ namespace Application
 
         public bool DeactivateCoupon(int id)
         {
-            throw new NotImplementedException();
+            return _adminRepository.DeactivateCoupon(id);
         }
 
         public bool DeleteCoupon(int id)
         {
-            throw new NotImplementedException();
+            return _adminRepository.DeleteCoupon(id);
         }
 
-        public bool DeleteDoctor(int id)
+        public bool DeleteDoctor(string id)
         {
             return _adminRepository.DeleteDoctor(id);
         }
@@ -50,19 +50,13 @@ namespace Application
             return _adminRepository.EditDoctor(doctor);
         }
 
-        public IEnumerable<Doctor> GetAllDoctors(int skip, int page)
+        public IEnumerable<Doctor> GetAllDoctors(int skip, int page, string search)
         {
-            return _adminRepository.GetAllDoctors(skip, page);
+            return _adminRepository.GetAllDoctors(skip, page, search);
         }
-
-        public IEnumerable<Doctor> GetAllDoctorsBySearch(string search)
+        public IEnumerable<Patient> GetAllPatients(int skip, int page, string search)
         {
-            return _adminRepository.GetAllDoctorsBySearch(search);
-        }
-
-        public IEnumerable<Patient> GetAllPatients(int skip, int page)
-        {
-            return _adminRepository.GetAllPatients(skip, page);
+            return _adminRepository.GetAllPatients(skip, page, search);
         }
 
         public Doctor GetDoctorById(int doctorId)

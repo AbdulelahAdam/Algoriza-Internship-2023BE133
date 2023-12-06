@@ -136,3 +136,10 @@ C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\re
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\API.pdb
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\obj\Debug\net5.0\API.genruntimeconfig.cache
 C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\BouncyCastle.Cryptography.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\MailKit.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\MimeKit.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\System.Formats.Asn1.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\System.Runtime.CompilerServices.Unsafe.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\System.Security.Cryptography.Pkcs.dll
+C:\CodeRepository\cSharp\dotnet\AlgorizaPractice\Project\API\bin\Debug\net5.0\System.Text.Encoding.CodePages.dll

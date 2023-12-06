@@ -19,6 +19,7 @@ namespace Infrastructure.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Booking> Bookings{ get; set; }
         public DbSet<TimeSlot> TimeSlots { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

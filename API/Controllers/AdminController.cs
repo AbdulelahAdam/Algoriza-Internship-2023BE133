@@ -61,27 +61,12 @@ namespace Algoriza_Internship_BE133.Controllers
 
         [HttpGet("GetAllDoctors")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetAllDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public IActionResult GetAllDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
             try
             {
-                var paginatedData = _adminService.GetAllDoctors(pageNumber, pageSize);
+                var paginatedData = _adminService.GetAllDoctors(pageNumber, pageSize, search);
                 return Ok(paginatedData);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
-            }
-        }
-        
-        [HttpGet("GetAllDoctorsBySearch")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult GetAllDoctorsBySearch([FromQuery] string search = "")
-        {
-            try
-            {
-                var result = _adminService.GetAllDoctorsBySearch(search);
-                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -91,11 +76,11 @@ namespace Algoriza_Internship_BE133.Controllers
    
         [HttpGet("GetAllPatients")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetAllPatients([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        public IActionResult GetAllPatients([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
             try
             {
-                var paginatedData = _adminService.GetAllPatients(pageNumber, pageSize);
+                var paginatedData = _adminService.GetAllPatients(pageNumber, pageSize, search);
                 return Ok(paginatedData);
             }
             catch (Exception ex)
@@ -106,17 +91,25 @@ namespace Algoriza_Internship_BE133.Controllers
     
         [HttpPost("AddDoctor")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddDoctor(Doctor doctor)
+        public async Task<bool> AddDoctor(Doctor doctor)
         {
             var doc = await _adminService.AddDoctor(doctor);
 
             if (doc != true)
-                return BadRequest(doc);
+                return false;
             
-            return Ok(doc);
+            return true;
         }
 
-  
+
+        [HttpPost("AddCoupon")]
+        [Authorize(Roles = "Admin")]
+        public bool AddCoupon(CouponPayload obj)
+        {
+            return _adminService.AddCoupon(obj);
+        }
+
+
         [HttpPut("EditDoctor")]
         [Authorize(Roles = "Admin")]
         public IActionResult EditDoctor(Doctor changedDoctor)
@@ -128,17 +121,34 @@ namespace Algoriza_Internship_BE133.Controllers
 
             return Ok(doc);
         }
-       
+
+
+        [HttpDelete("DeleteCoupon")]
+        [Authorize(Roles = "Admin")]
+        public bool DeleteCoupon(int id)
+        {
+            return _adminService.DeleteCoupon(id);
+        }
+
         [HttpDelete("DeleteDoctor")]
         [Authorize(Roles = "Admin")]
-        public IActionResult DeleteDoctor(int id)
+        public bool DeleteDoctor(string id)
         {
             var doc = _adminService.DeleteDoctor(id);
 
             if (doc != true)
-                return NotFound();
+                return false;
 
-            return Ok(doc);
+            return true;
         }
+
+        [HttpPost("DeactivateCoupon")]
+        [Authorize(Roles = "Admin")]
+        public bool DeactivateCoupon(int id)
+        {
+            return _adminService.DeactivateCoupon(id);
+        }
+        
+        
     }
 }

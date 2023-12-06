@@ -24,12 +24,14 @@ namespace Infrastructure.Data
             _bookingRepository = bookingRepository;
         }
 
-        public IEnumerable<Booking> GetAllBookings()
+        public IEnumerable<Booking> GetAllBookings(string patientId)
         {
-            throw new NotImplementedException();
+            var patientBookings = _context.Bookings.Where(p => p.PatientId == patientId);
+
+            return patientBookings;
         }
 
-        public IEnumerable<Doctor> GetAllDoctors(int pageNumber, int pageSize)
+        public IEnumerable<Doctor> GetAllDoctors(int pageNumber, int pageSize, string search)
         {
             if (pageNumber < 1)
             {
@@ -38,12 +40,16 @@ namespace Infrastructure.Data
 
             if (pageSize < 1)
             {
-                pageSize = 1; 
+                pageSize = 1;
             }
 
             int skip = (pageNumber - 1) * pageSize;
 
-            var paginatedData = _context.Doctors.Include(d => d.Appointments)
+            var paginatedData = _context.Doctors.Include(d => d.Appointments).Where(d =>
+                    d.UserName.Contains(search) ||
+                    d.Email.Contains(search) ||
+                    d.Id.Contains(search)
+                )
                 .Skip(skip)
                 .Take(pageSize)
                 .ToList();
@@ -51,10 +57,6 @@ namespace Infrastructure.Data
             return paginatedData;
         }
 
-        public bool MakeBooking(BookingPayload obj, string patientId)
-        {
-            return _bookingRepository.MakeBooking(obj, patientId);
-        }
 
         public async Task<bool> Register(Patient patient)
         {

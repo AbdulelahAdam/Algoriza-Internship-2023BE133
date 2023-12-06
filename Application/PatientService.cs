@@ -26,19 +26,24 @@ namespace Application
         }
         
 
-        public IEnumerable<Booking> GetAllBookings()
+        public IEnumerable<Booking> GetAllBookings(string patientId)
         {
-            throw new NotImplementedException();
+            return _patientRepository.GetAllBookings(patientId);
         }
 
-        public IEnumerable<Doctor> GetAllDoctors(int skip, int page)
+        public IEnumerable<Doctor> GetAllDoctors(int skip, int page, string search)
         {
-            return _patientRepository.GetAllDoctors(skip, page);
+            return _patientRepository.GetAllDoctors(skip, page, search);
         }
 
         public bool MakeBooking(BookingPayload obj, string patientId)
         {
             return _bookingRepository.MakeBooking(obj, patientId);
+        }
+
+        public bool CancelBooking(int bookingId, string patientId)
+        {
+            return _bookingRepository.CancelBooking(bookingId, patientId);
         }
     }
 }
