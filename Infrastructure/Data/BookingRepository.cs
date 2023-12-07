@@ -65,7 +65,8 @@ namespace Infrastructure.Data
                 TimeSlotId = obj.TimeSlotId,
                 PatientId = patientId,
                 BookingPrice = appointmentInfo.Price,
-                FinalBookingPrice = bookingPrice
+                FinalBookingPrice = bookingPrice,
+                CreatedAt = DateTime.Now
             };
 
             _context.Bookings.Add(booking);
