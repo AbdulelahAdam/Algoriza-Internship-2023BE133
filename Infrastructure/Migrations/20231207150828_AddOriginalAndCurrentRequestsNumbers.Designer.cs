@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207150828_AddOriginalAndCurrentRequestsNumbers")]
+    partial class AddOriginalAndCurrentRequestsNumbers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +134,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<float>("BookingPrice")
                         .HasColumnType("real");
@@ -545,16 +544,16 @@ namespace Infrastructure.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "df716a31-c5c9-41cf-987f-0e1f27d5c527",
+                            ConcurrencyStamp = "66b68227-6be9-448e-8503-e25f880ba865",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECTiOByxAFS4gJ/8AtvwonpgZ1zyOqx9IbWcGTvIc77vbLweuPVbesRRYbvZn7yEng==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGcBRRsqltwLFTt6jB+u1OyMMqSbYOxNTm3nhxK0Qj0poDDcVIe9BKhTATbg9jL0Vg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4e366cb6-d341-4ae4-9dda-1122cd3a2a2b",
+                            SecurityStamp = "346ec06c-1e5d-430c-9109-3565fd018684",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });

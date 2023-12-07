@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\doctor_images\" />
     <Folder Include="wwwroot\images\patient_images\" />
   </ItemGroup>
 

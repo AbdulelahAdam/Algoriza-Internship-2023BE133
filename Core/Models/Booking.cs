@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models
 {
@@ -16,7 +17,8 @@ namespace Core.Models
         public float BookingPrice { get; set; }
         public float FinalBookingPrice { get; set; }
         public BookingStatus Status { get; set; } = BookingStatus.PENDING;
+        public DateTime CreatedAt { get; set; }
 
-
+        public DateTime BookingDate { get; set; }
     }
 }

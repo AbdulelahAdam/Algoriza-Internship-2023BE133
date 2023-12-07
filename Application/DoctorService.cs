@@ -34,7 +34,7 @@ namespace Application
             return _doctorRepository.DeleteAppointment(doctorId);
         }
 
-        public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, string search)
+        public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, DateTime search)
         {
             return _doctorRepository.GetAllBookings(doctorId, pageNumber, pageSize, search);
         }

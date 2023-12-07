@@ -40,12 +40,12 @@ namespace Algoriza_Internship_BE133.Controllers
 
         [HttpPost("ConfirmCheckUp")]
         [Authorize(Roles = "Doctor")]
-        public bool ConfirmCheckUp([FromQuery] int bookingId) 
+        public bool ConfirmCheckUp([FromQuery] int Id) 
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return _doctorService.ConfirmCheckUp(bookingId, doctorId);
+            return _doctorService.ConfirmCheckUp(Id, doctorId);
         }
 
 
@@ -73,15 +73,15 @@ namespace Algoriza_Internship_BE133.Controllers
 
         [HttpDelete("DeleteAppointment")]
         [Authorize(Roles = "Doctor")]
-        public bool DeleteAppointment(int doctorId)
+        public bool DeleteAppointment([FromQuery] int Id)
         {
-            return _doctorService.DeleteAppointment(doctorId);
+            return _doctorService.DeleteAppointment(Id);
         }
 
 
         [HttpGet("SearchBookings")]
         [Authorize(Roles = "Doctor")]
-        public IEnumerable<Booking> SearchBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string search)
+        public IEnumerable<Booking> SearchBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] DateTime search)
         {   
             var claimsIdentity = User.Identity as ClaimsIdentity;
             string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;

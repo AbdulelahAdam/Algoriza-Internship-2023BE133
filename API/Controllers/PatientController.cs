@@ -51,7 +51,7 @@ namespace Algoriza_Internship_BE133.Controllers
         }
         [HttpGet("SearchDoctors")]
         [Authorize(Roles = "Patient")]
-        public IActionResult SearchDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, string search = "")
+        public IActionResult SearchDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
             try
             {
@@ -84,12 +84,12 @@ namespace Algoriza_Internship_BE133.Controllers
 
         [HttpPut("CancelBooking")]
         [Authorize(Roles = "Patient")]
-        public bool CancelBooking([FromQuery] int bookingId)
+        public bool CancelBooking([FromQuery] int Id)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            bool bookingResult = _bookingService.CancelBooking(bookingId, userId);
+            bool bookingResult = _bookingService.CancelBooking(Id, userId);
 
             if (bookingResult)
             {

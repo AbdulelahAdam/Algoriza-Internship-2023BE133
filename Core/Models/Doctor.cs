@@ -15,8 +15,6 @@ namespace Core.Models
         [Required]
         public int SpecializationId { set; get; }      
         
-        public override string UserImage { get; set; }
-        
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

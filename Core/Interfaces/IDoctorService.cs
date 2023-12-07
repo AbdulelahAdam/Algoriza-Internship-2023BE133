@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Core.Models
 {
     public interface IDoctorService
     {
-        IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, string search);
+        IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, DateTime search);
         bool ConfirmCheckUp(int BookingId, string doctorId);
 
         bool AddAppointment(string doctorId, AppointmentPayload obj);

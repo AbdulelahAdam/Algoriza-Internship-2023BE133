@@ -9,7 +9,7 @@ namespace Infrastructure.Interfaces
 {
     public interface IDoctorRepository
     {
-        IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, string search);
+        IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, DateTime search);
         bool ConfirmCheckUp(int BookingId, string doctorId);
 
         bool AddAppointment(string doctorId, AppointmentPayload obj);

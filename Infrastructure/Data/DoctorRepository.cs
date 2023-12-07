@@ -25,34 +25,42 @@ namespace Infrastructure.Data
 
         public bool AddAppointment(string doctorId, AppointmentPayload payload)
         {
-            
+
             int appointmentsCount = 0;
             int dbSaves = 0;
             Days parsedDay;
+            int timeSlotId;
             foreach (var (day, times) in payload.Appointments)
             {
                 parsedDay = _daysService.GetParsedDay(day);
                 foreach (var time in times)
                 {
+                    timeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time);// get parsed time
+
                     var appointment = new Appointment
                     {
                         DoctorId = doctorId,
                         Day = parsedDay,
-                        TimeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time),
+                        TimeSlotId = timeSlotId,
                         Price = payload.Price
                     };
                     ++appointmentsCount;
-                    var doctor = _context.Doctors.FirstOrDefault(d => d.Id == doctorId); // also this here doesn't eqaute, there's an error
+                    var doctor = _context.Doctors.FirstOrDefault(d => d.Id == doctorId);
+                    var doctorAppointments = _context.Appointments.Where(a => a.DoctorId == doctor.Id && a.Day == parsedDay && a.TimeSlotId == timeSlotId).FirstOrDefault();
 
-                    if (doctor != null)
+                    if (doctor != null && doctorAppointments == null) // If doctor exists and doesn't have an appointment on this specific day and time already?
                     {
                         doctor.Appointments.Add(appointment);
                         dbSaves += _context.SaveChanges();
                     }
+                    else
+                    {
+                        return false; // Can't make an appointment that's already made
+                    }
                 }
 
             }
-            return (dbSaves == appointmentsCount);
+            return (dbSaves == appointmentsCount); // Added Appointment
         }
 
 
@@ -61,7 +69,7 @@ namespace Infrastructure.Data
         {
             var booking = _context.Bookings.FirstOrDefault(b => b.Id == BookingId && b.DoctorId == doctorId);
 
-            if(booking != null && booking.Status == BookingStatus.PENDING)
+            if (booking != null && booking.Status == BookingStatus.PENDING)
             {
                 booking.Status = BookingStatus.COMPLETED;
                 _context.SaveChanges();
@@ -89,7 +97,7 @@ namespace Infrastructure.Data
             return false;
         }
 
-        public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, string search)
+        public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, DateTime search)
         {
             if (pageNumber < 1)
             {
@@ -104,8 +112,11 @@ namespace Infrastructure.Data
             int skip = (pageNumber - 1) * pageSize;
 
 
+
+
             var paginatedData =
-                _context.Bookings.Where(b => b.DoctorId == doctorId)
+                _context.Bookings.Where(b => b.DoctorId == doctorId && b.Status == BookingStatus.PENDING)
+                .Where(b => b.BookingDate == search)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToList();
@@ -116,29 +127,30 @@ namespace Infrastructure.Data
         public bool UpdateAppointment(string doctorId, AppointmentPayload payload)
         {
             Days parsedDay;
-            
-            var doctor = _context.Doctors
-                .Include(d => d.Appointments)
-                .FirstOrDefault(d => d.Id == doctorId);
+            int timeSlotId;
 
-            if (doctor != null)
+            foreach (var (day, times) in payload.Appointments)
             {
-                foreach (var (day, times) in payload.Appointments)
+                parsedDay = _daysService.GetParsedDay(day);
+                foreach (var time in times)
                 {
-                    parsedDay = _daysService.GetParsedDay(day);
-                    foreach (var time in times)
-                    {
-                        var newAppointment = new Appointment
-                        {
-                            DoctorId = doctorId,
-                            Day = parsedDay,
-                            TimeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time),
-                            Price = payload.Price
-                        };
-                        var doctorAppointments = _context.Appointments.Update(newAppointment);
-                        //doctorAppointments.State = Microsoft.EntityFrameworkCore.EntityState.Modified
-                        _context.SaveChanges();
+                    timeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time);// get parsed time
 
+                    var doctorAppointment = _context.Appointments.Where(a => a.DoctorId == doctorId && a.Day == parsedDay && a.Price == payload.Price).FirstOrDefault();
+                    var doctorBooking = _context.Bookings.Where(b => b.DoctorId == doctorId && b.TimeSlotId == timeSlotId);
+
+                    if (doctorAppointment != null && doctorBooking == null) // appointment exists and not booked by patient
+                    {
+                        doctorAppointment.TimeSlotId = timeSlotId;
+
+                        var result = _context.Appointments.Attach(doctorAppointment);
+                        result.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return false; // Either this appointment doesn't exist, hence cannot update,
+                                      // or this appointment is booked by a patient
                     }
 
                 }

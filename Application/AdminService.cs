@@ -45,6 +45,11 @@ namespace Application
             return _adminRepository.DeleteDoctor(id);
         }
 
+        public int DoctorsRegisteredLast24Hours()
+        {
+            return _adminRepository.DoctorsRegisteredLast24Hours();
+        }
+
         public bool EditDoctor(Doctor doctor)
         {
             return _adminRepository.EditDoctor(doctor);
@@ -70,9 +75,34 @@ namespace Application
 
         }
 
-        public bool UpdateCoupon(Coupon changedCoupon)
+        public int NumberOfDoctors()
         {
-            throw new NotImplementedException();
+            return _adminRepository.NumberOfDoctors();
+        }
+
+        public int NumberOfPatients()
+        {
+            return _adminRepository.NumberOfPatients();
+        }
+
+        public int NumberOfRequests()
+        {
+            return _adminRepository.NumberOfRequests();
+        }
+
+        public int PatientsRegisteredLast24Hours()
+        {
+            return _adminRepository.PatientsRegisteredLast24Hours();
+        }
+
+        public int RequestsMadeLast24Hours()
+        {
+            return _adminRepository.RequestsMadeLast24Hours();
+        }
+
+        public bool UpdateCoupon(int id, CouponPayload changedCoupon)
+        {
+            return _adminRepository.UpdateCoupon(id, changedCoupon);
         }
     }
 }

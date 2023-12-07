@@ -39,10 +39,11 @@ namespace Infrastructure.Data
             .FirstOrDefault();
 
             float bookingPrice = appointmentInfo.Price;
+            float finalBookingPrice = bookingPrice;
 
             var couponInfo = _context.Coupons.FirstOrDefault(c => c.DiscountCode.Equals(obj.CouponId));
 
-            if(couponInfo != null && couponInfo.DiscountCodeStatus != DiscountCodeStatus.DEACTIVATED && couponInfo.RequestsNumber > 0) 
+            if(couponInfo != null && couponInfo.DiscountCodeStatus != DiscountCodeStatus.DEACTIVATED && couponInfo.CurrentRequestsNumber > 0) 
             {
                 if(couponInfo.DiscountType == DiscountType.PERCENTAGE)
                 {
@@ -55,7 +56,7 @@ namespace Infrastructure.Data
                     bookingPrice = appointmentInfo.Price - couponInfo.DiscountValue;
                 }
 
-                couponInfo.RequestsNumber--;
+                couponInfo.CurrentRequestsNumber--;
             }
 
             var booking = new Booking
@@ -63,7 +64,8 @@ namespace Infrastructure.Data
                 DoctorId = appointmentInfo.DoctorId,
                 TimeSlotId = obj.TimeSlotId,
                 PatientId = patientId,
-                BookingPrice = bookingPrice
+                BookingPrice = appointmentInfo.Price,
+                FinalBookingPrice = bookingPrice
             };
 
             _context.Bookings.Add(booking);

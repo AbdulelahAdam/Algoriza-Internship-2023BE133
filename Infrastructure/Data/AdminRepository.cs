@@ -28,7 +28,8 @@ namespace Infrastructure.Data
             var newCoupon = new Coupon
             {
                 DiscountCode = obj.DiscountCode,
-                RequestsNumber = obj.RequestsNumber,
+                OriginalRequestsNumber = obj.RequestsNumber,
+                CurrentRequestsNumber = obj.RequestsNumber,
                 DiscountType = obj.DiscountType,
                 DiscountValue = obj.DiscountValue,
             };
@@ -40,10 +41,10 @@ namespace Infrastructure.Data
 
         public async Task<bool> AddDoctor(Doctor doctor)
         {
-            //if(doctor.UserImage == null)
-            //{
-            //    return false;
-            //}
+            if (doctor.UserImage == null)
+            {
+                return false;
+            }
             var password = doctor.PasswordHash;
             var hashedPass = new PasswordHasher<Doctor>().HashPassword(doctor, doctor.PasswordHash);
             doctor.PasswordHash = hashedPass;
@@ -93,7 +94,7 @@ namespace Infrastructure.Data
             Doctor doc = _context.Doctors.FirstOrDefault(d => d.Id == id);
 
             var docBookings = _context.Bookings.Where(b => b.DoctorId == id);
-           
+
             if (doc != null && docBookings == null)
             {
                 _context.Remove(doc);
@@ -196,11 +197,62 @@ namespace Infrastructure.Data
             return null;
         }
 
-        public bool UpdateCoupon(Coupon changedCoupon)
+        public int DoctorsRegisteredLast24Hours()
         {
-            throw new NotImplementedException();
+            var _24Hours = DateTime.UtcNow.AddHours(-24);
+            return _context.Doctors.Count(u => u.LockoutEnd >= _24Hours);
         }
 
+        public int PatientsRegisteredLast24Hours()
+        {
+            var _24Hours = DateTime.UtcNow.AddHours(-24);
+            return _context.Patients.Count(u => u.LockoutEnd >= _24Hours);
+        }
 
+        public int RequestsMadeLast24Hours()
+        {
+            var _24Hours = DateTime.UtcNow.AddHours(-24);
+            return _context.Bookings.Count(b => b.BookingDate >= _24Hours);
+        }
+
+        public bool UpdateCoupon(int id, CouponPayload changedCoupon)
+        {
+            var coupon = _context.Coupons.Where(c => c.Id == id).FirstOrDefault();
+
+            if (coupon != null && coupon.OriginalRequestsNumber == coupon.CurrentRequestsNumber)
+            {
+                // update here
+                coupon.DiscountCode = changedCoupon.DiscountCode;
+                coupon.CurrentRequestsNumber = changedCoupon.RequestsNumber;
+                coupon.OriginalRequestsNumber = changedCoupon.RequestsNumber;
+                coupon.DiscountCodeStatus = DiscountCodeStatus.ACTIVATED;
+                coupon.DiscountType = changedCoupon.DiscountType;
+                coupon.DiscountValue = changedCoupon.DiscountValue;
+
+
+                var result = _context.Coupons.Attach(coupon);
+                result.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
+
+        }
+
+        public int NumberOfDoctors()
+        {
+            return _context.Doctors.Count();
+        }
+
+        public int NumberOfPatients()
+        {
+            return _context.Patients.Count();
+        }
+
+        public int NumberOfRequests()
+        {
+            return _context.Bookings.Count();
+        }
     }
 }

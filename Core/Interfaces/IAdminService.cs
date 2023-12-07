@@ -6,6 +6,19 @@ namespace Core.Models
 {
     public interface IAdminService
     {
+        // Dashboard Operations
+
+        int NumberOfDoctors();
+        int NumberOfPatients();
+        int NumberOfRequests();
+
+
+        int DoctorsRegisteredLast24Hours();
+        int PatientsRegisteredLast24Hours();
+        int RequestsMadeLast24Hours();
+
+
+
         // Operations on Doctors
         IEnumerable<Doctor> GetAllDoctors(int skip, int page, string search);
         Doctor GetDoctorById(int doctorId);
@@ -21,7 +34,7 @@ namespace Core.Models
         // Discount Coupon Settings
 
         bool AddCoupon(CouponPayload obj);
-        bool UpdateCoupon(Coupon changedCoupon);
+        bool UpdateCoupon(int id, CouponPayload changedCoupon);
         bool DeleteCoupon(int id);
         bool DeactivateCoupon(int id);
 
