@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Core.Models
 {
