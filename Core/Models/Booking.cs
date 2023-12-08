@@ -20,5 +20,7 @@ namespace Core.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime BookingDate { get; set; }
+
+        public Doctor Doctor { get; set; }
     }
 }

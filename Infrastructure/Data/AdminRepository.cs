@@ -254,5 +254,94 @@ namespace Infrastructure.Data
         {
             return _context.Bookings.Count();
         }
+
+        public int DoctorsRegisteredLastWeek()
+        {
+            var sevenDays = DateTime.UtcNow.AddDays(-7);
+            return _context.Doctors.Count(u => u.LockoutEnd >= sevenDays);
+        }
+
+        public int PatientsRegisteredLastWeek()
+        {
+            var sevenDays = DateTime.UtcNow.AddDays(-7);
+            return _context.Patients.Count(u => u.LockoutEnd >= sevenDays);
+        }
+
+        public int RequestsMadeLastWeek()
+        {
+            var sevenDays = DateTime.UtcNow.AddDays(-7);
+            return _context.Bookings.Count(u => u.CreatedAt >= sevenDays);
+        }
+
+        public int DoctorsRegisteredLastMonth()
+        {
+            var firstDayOfMonth = DateTime.UtcNow.AddDays(-30);
+            return _context.Doctors.Count(b => b.LockoutEnd >= firstDayOfMonth);
+        }
+
+        public int PatientsRegisteredLastMonth()
+        {
+            var firstDayOfMonth = DateTime.UtcNow.AddDays(-30);
+            return _context.Patients.Count(b => b.LockoutEnd >= firstDayOfMonth);
+        }
+
+        public int RequestsMadeLastMonth()
+        {
+            var firstDayOfMonth = DateTime.UtcNow.AddDays(-30);
+            return _context.Bookings.Count(b => b.CreatedAt >= firstDayOfMonth);
+        }
+
+        public int DoctorsRegisteredLastYear()
+        {
+            var firstDayOfYear = new DateTime(DateTime.UtcNow.Year, 1, 1);
+            return _context.Doctors.Count(b => b.LockoutEnd >= firstDayOfYear);
+        }
+
+        public int PatientsRegisteredLastYear()
+        {
+            var firstDayOfYear = new DateTime(DateTime.UtcNow.Year, 1, 1);
+            return _context.Patients.Count(b => b.LockoutEnd >= firstDayOfYear);
+        }
+
+        public int RequestsMadeLastYear()
+        {
+            var firstDayOfYear = new DateTime(DateTime.UtcNow.Year, 1, 1);
+            return _context.Bookings.Count(b => b.CreatedAt >= firstDayOfYear);
+        }
+
+
+        public Dictionary<string, int> GetDepartmentRankings()
+        {
+            var topDepartments = _context.Bookings
+                .GroupBy(b => b.Doctor.SpecializationId)
+                .OrderByDescending(g => g.Count())
+                .Take(5)
+                .Select(g => new
+                {
+                    SpecializationId = g.Key,
+                    BookingCount = g.Count()
+                })
+                .Join(_context.Specializations, x => x.SpecializationId, specialization => specialization.Id, (x, specialization) => new
+                {
+                    SpecializationName = specialization.Name,
+                    x.BookingCount
+                })
+                .ToDictionary(x => x.SpecializationName, x => x.BookingCount);
+
+            return topDepartments;
+        }
+
+
+        public List<string> GetTopBookedDoctors()
+        {
+            var topDoctors = _context.Bookings
+            .GroupBy(b => b.Doctor.UserName)
+            .OrderByDescending(g => g.Count())
+            .Select(g => g.Key)
+            .Take(10)
+            .ToList();
+
+            return topDoctors;
+        }
     }
 }

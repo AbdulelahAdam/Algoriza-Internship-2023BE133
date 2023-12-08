@@ -14,12 +14,26 @@ namespace Infrastructure.Interfaces
         int NumberOfDoctors();
         int NumberOfPatients();
         int NumberOfRequests();
+        Dictionary<string, int> GetDepartmentRankings();
+        List<string> GetTopBookedDoctors();
 
-
+        // Bonus Dashboard Operations
         int DoctorsRegisteredLast24Hours();
         int PatientsRegisteredLast24Hours();
         int RequestsMadeLast24Hours();
 
+
+        int DoctorsRegisteredLastWeek();
+        int PatientsRegisteredLastWeek();
+        int RequestsMadeLastWeek();
+
+        int DoctorsRegisteredLastMonth();
+        int PatientsRegisteredLastMonth();
+        int RequestsMadeLastMonth();
+
+        int DoctorsRegisteredLastYear();
+        int PatientsRegisteredLastYear();
+        int RequestsMadeLastYear();
 
 
         // Operations on Doctors

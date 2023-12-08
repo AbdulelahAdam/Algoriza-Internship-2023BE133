@@ -38,6 +38,16 @@ namespace Algoriza_Internship_BE133.Controllers
             return NotFound("User not found");
         }
 
+        [HttpGet("GetAllBookings")]
+        [Authorize(Roles = "Doctor")]
+        public IEnumerable<Booking> GetAllBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] DateTime search)
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return _doctorService.GetAllBookings(doctorId, pageNumber, pageSize, search);
+        }
+
         [HttpPost("ConfirmCheckUp")]
         [Authorize(Roles = "Doctor")]
         public bool ConfirmCheckUp([FromQuery] int Id) 
@@ -78,15 +88,5 @@ namespace Algoriza_Internship_BE133.Controllers
             return _doctorService.DeleteAppointment(Id);
         }
 
-
-        [HttpGet("SearchBookings")]
-        [Authorize(Roles = "Doctor")]
-        public IEnumerable<Booking> SearchBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] DateTime search)
-        {   
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            return _doctorService.GetAllBookings(doctorId, pageNumber, pageSize, search);
-        }
     }
 }

@@ -49,9 +49,9 @@ namespace Algoriza_Internship_BE133.Controllers
 
             return NotFound("User not found");
         }
-        [HttpGet("SearchDoctors")]
+        [HttpGet("GetAllDoctors")]
         [Authorize(Roles = "Patient")]
-        public IActionResult SearchDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
+        public IActionResult GetAllDoctors([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
             try
             {
@@ -81,6 +81,24 @@ namespace Algoriza_Internship_BE133.Controllers
 
         }
 
+        [HttpGet("GetAllBookings")]
+        [Authorize(Roles = "Patient")]
+        public IActionResult GetAllBookings()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var result = _patientService.GetAllBookings(userId);
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return Ok("[]");
+
+        }
+
 
         [HttpPut("CancelBooking")]
         [Authorize(Roles = "Patient")]
@@ -100,23 +118,5 @@ namespace Algoriza_Internship_BE133.Controllers
 
         }
 
-
-        [HttpGet("GetAllBookings")]
-        [Authorize(Roles = "Patient")]
-        public IActionResult GetAllBookings()
-        {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            var result = _patientService.GetAllBookings(userId);
-
-            if (result != null)
-            {
-                return Ok(result);
-            }
-
-            return Ok("[]");
-
-        }
     }
 }

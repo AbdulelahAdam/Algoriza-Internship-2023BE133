@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Interfaces;
+using Core.Models;
 using Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,13 +16,28 @@ namespace Infrastructure.Data
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IBookingRepository _bookingRepository;
+        private readonly IEmailService _emailService;
 
-        public PatientRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IBookingRepository bookingRepository)
+        public PatientRepository(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IEmailService emailService)
         {
             _context = context;
             _userManager = userManager;
-            _bookingRepository = bookingRepository;
+            _emailService = emailService;
+        }
+
+        public async Task<bool> Register(Patient patient)
+        {
+            var hashedPass = new PasswordHasher<Patient>().HashPassword(patient, patient.PasswordHash);
+            patient.PasswordHash = hashedPass;
+            var result = await _userManager.CreateAsync(patient);
+            if (result.Succeeded)
+            {
+                //var emailSubject = "Hello, New User";
+                //var emailBody = $"Welcome, {doctor.UserName}.\n\n This is you new account:\n Username: {doctor.UserName}\nPassword: {password}";
+                //await _emailService.SendEmailAsync(doctor.Email, emailSubject, emailBody);
+                return true;
+            }
+            return false;
         }
 
         public IEnumerable<Booking> GetAllBookings(string patientId)
@@ -55,19 +71,6 @@ namespace Infrastructure.Data
                 .ToList();
 
             return paginatedData;
-        }
-
-
-        public async Task<bool> Register(Patient patient)
-        {
-            var hashedPass = new PasswordHasher<Patient>().HashPassword(patient, patient.PasswordHash);
-            patient.PasswordHash = hashedPass;
-            var result = await _userManager.CreateAsync(patient);
-            if (result.Succeeded)
-            {
-                return true;
-            }
-            return false;
         }
 
     }

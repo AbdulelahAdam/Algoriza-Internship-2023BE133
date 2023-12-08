@@ -50,6 +50,21 @@ namespace Application
             return _adminRepository.DoctorsRegisteredLast24Hours();
         }
 
+        public int DoctorsRegisteredLastMonth()
+        {
+            return _adminRepository.DoctorsRegisteredLastMonth();
+        }
+
+        public int DoctorsRegisteredLastWeek()
+        {
+            return _adminRepository.DoctorsRegisteredLastWeek();
+        }
+
+        public int DoctorsRegisteredLastYear()
+        {
+            return _adminRepository.DoctorsRegisteredLastYear();
+        }
+
         public bool EditDoctor(Doctor doctor)
         {
             return _adminRepository.EditDoctor(doctor);
@@ -95,14 +110,54 @@ namespace Application
             return _adminRepository.PatientsRegisteredLast24Hours();
         }
 
+        public int PatientsRegisteredLastMonth()
+        {
+            return _adminRepository.PatientsRegisteredLastMonth();
+        }
+
+        public int PatientsRegisteredLastWeek()
+        {
+            return _adminRepository.PatientsRegisteredLastWeek();
+        }
+
+        public int PatientsRegisteredLastYear()
+        {
+            return _adminRepository.PatientsRegisteredLastYear();
+        }
+
         public int RequestsMadeLast24Hours()
         {
             return _adminRepository.RequestsMadeLast24Hours();
         }
 
+        public int RequestsMadeLastYear()
+        {
+            return _adminRepository.RequestsMadeLastYear();
+        }
+
+        public int RequestsMadeLastMonth()
+        {
+            return _adminRepository.RequestsMadeLastMonth();
+        }
+
+        public int RequestsMadeLastWeek()
+        {
+            return _adminRepository.RequestsMadeLastWeek();
+        }
+
         public bool UpdateCoupon(int id, CouponPayload changedCoupon)
         {
             return _adminRepository.UpdateCoupon(id, changedCoupon);
+        }
+
+        public Dictionary<string, int> GetDepartmentRankings()
+        {
+            return _adminRepository.GetDepartmentRankings();
+        }
+
+        public List<string> GetTopBookedDoctors()
+        {
+            return _adminRepository.GetTopBookedDoctors();
         }
     }
 }
