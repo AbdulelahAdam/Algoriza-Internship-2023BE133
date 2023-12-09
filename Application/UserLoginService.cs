@@ -13,14 +13,14 @@ namespace Application
             _userLoginRepository = userLoginRepository;
         }
 
-        public ApplicationUser Authenticate(ApplicationUser admin)
+        public ApplicationUser Authenticate(ApplicationUser user)
         {
-            return _userLoginRepository.Authenticate(admin);
+            return _userLoginRepository.Authenticate(user);
         }
 
-        public string Generate(ApplicationUser admin)
+        public string Generate(ApplicationUser user)
         {
-            return _userLoginRepository.Generate(admin);
+            return _userLoginRepository.Generate(user);
         }
     }
 }

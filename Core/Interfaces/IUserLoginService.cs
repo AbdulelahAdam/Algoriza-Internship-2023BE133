@@ -2,7 +2,7 @@
 {
     public interface IUserLoginService
     {
-        string Generate(ApplicationUser admin);
-        ApplicationUser Authenticate(ApplicationUser admin);
+        string Generate(ApplicationUser user);
+        ApplicationUser Authenticate(ApplicationUser user);
     }
 }

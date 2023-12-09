@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Core.Models
 {
@@ -20,7 +21,7 @@ namespace Core.Models
         public DateTime CreatedAt { get; set; }
 
         public DateTime BookingDate { get; set; }
-
+        [JsonIgnore]
         public Doctor Doctor { get; set; }
     }
 }
