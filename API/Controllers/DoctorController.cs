@@ -36,12 +36,12 @@ namespace Algoriza_Internship_BE133.Controllers
 
         [HttpGet("GetAllBookings")]
         [Authorize(Roles = "Doctor")]
-        public IEnumerable<Booking> GetAllBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] DateTime search)
+        public IEnumerable<Booking> GetAllBookings([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] DateTime searchByDate)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return _doctorService.GetAllBookings(doctorId, pageNumber, pageSize, search);
+            return _doctorService.GetAllBookings(doctorId, pageNumber, pageSize, searchByDate);
         }
 
         [HttpPost("ConfirmCheckUp")]
@@ -79,9 +79,12 @@ namespace Algoriza_Internship_BE133.Controllers
 
         [HttpDelete("DeleteAppointment")]
         [Authorize(Roles = "Doctor")]
-        public bool DeleteAppointment([FromQuery] int Id)
+        public bool DeleteAppointment([FromBody] AppointmentPayload payload)
         {
-            return _doctorService.DeleteAppointment(Id);
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            string doctorId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return _doctorService.DeleteAppointment(doctorId, payload);
         }
 
     }

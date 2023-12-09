@@ -77,21 +77,36 @@ namespace Infrastructure.Data
 
         }
 
-        public bool DeleteAppointment(int doctorId)
+        public bool DeleteAppointment(string doctorId, AppointmentPayload payload)
         {
-            string Id = Convert.ToString(doctorId);
+            Days parsedDay;
+            int timeSlotId;
 
-            var doctor = _context.Doctors
-                .Include(d => d.Appointments)
-                .FirstOrDefault(d => d.Id == Id);
-
-            if (doctor != null)
+            foreach (var (day, times) in payload.Appointments)
             {
-                doctor.Appointments.Clear();
-                _context.SaveChanges();
-                return true;
+                parsedDay = _daysService.GetParsedDay(day);
+                foreach (var time in times)
+                {
+                    timeSlotId = _timeSlotService.GetTimeSlotIdForAppointmentTime(time);// get parsed time
+
+                    var doctorAppointment = _context.Appointments.Where(a => a.DoctorId == doctorId && a.Day == parsedDay && a.Price == payload.Price).FirstOrDefault();
+                    var doctorBooking = _context.Bookings.Where(b => b.DoctorId == doctorId && b.TimeSlotId == timeSlotId);
+
+                    if (doctorAppointment != null && doctorBooking == null) // appointment exists and not booked by patient
+                    {
+                        var result = _context.Appointments.Remove(doctorAppointment);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return false; // Either this appointment doesn't exist, hence cannot delete,
+                                      // or this appointment is booked by a patient
+                    }
+
+                }
+
             }
-            return false;
+            return true;
         }
 
         public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, DateTime search)

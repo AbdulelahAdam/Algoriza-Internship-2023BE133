@@ -25,9 +25,9 @@ namespace Application
             return _doctorRepository.ConfirmCheckUp(BookingId, doctorId);
         }
 
-        public bool DeleteAppointment(int doctorId)
+        public bool DeleteAppointment(string doctorId, AppointmentPayload payload)
         {
-            return _doctorRepository.DeleteAppointment(doctorId);
+            return _doctorRepository.DeleteAppointment(doctorId, payload);
         }
 
         public IEnumerable<Booking> GetAllBookings(string doctorId, int pageNumber, int pageSize, DateTime search)
